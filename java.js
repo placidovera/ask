@@ -5,6 +5,7 @@ const mensaje = document.getElementById("mensaje");
 const jugarBtn = document.getElementById("jugar");
 const aprenderBtn = document.getElementById("aprender");
 const puntosElem = document.getElementById("puntos");
+const tituloElem = document.querySelector("h1.text-center"); // h1 principal
 
 let preguntas = [];
 let indice = 0;
@@ -52,6 +53,10 @@ botonSalir.addEventListener("click", () => {
   cambiarDireccionBtn.style.display = "inline-block";
   adivinanzaElem.textContent = "";
   mensaje.textContent = "";
+  // Restaurar título original
+  tituloElem.textContent = "“How much English do you know?” ✅";
+  jugarBtn.style.display = "inline-block";
+  aprenderBtn.style.display = "inline-block";
 });
 
 // Input de búsqueda tipo traductor
@@ -117,7 +122,7 @@ fetch("preguntas_limpias.json")
   })
   .catch(err => console.error("Error cargando JSON:", err));
 
-// Función de búsqueda (arreglada)
+// Función de búsqueda
 traductorBtn.addEventListener("click", () => {
   if (!preguntas.length) {
     mensaje.textContent = "El traductor aún no está listo, espera...";
@@ -130,14 +135,12 @@ traductorBtn.addEventListener("click", () => {
   let resultado = null;
 
   if (inglesAEspanol) {
-    // Inglés → Español
     resultado = preguntas.find(p => p.respuesta.toLowerCase() === texto);
     if (resultado) {
       mensaje.textContent = `Traducción: "${resultado.pregunta}"`;
       hablar(resultado.pregunta, "es-ES");
     }
   } else {
-    // Español → Inglés
     resultado = preguntas.find(p => p.pregunta.toLowerCase() === texto);
     if (resultado) {
       mensaje.textContent = `Traducción: "${resultado.respuesta}"`;
@@ -163,6 +166,11 @@ jugarBtn.addEventListener("click", () => {
   traductorInput.style.display = "none";
   traductorBtn.style.display = "none";
   cambiarDireccionBtn.style.display = "none";
+  // Ocultar botones de juego y aprendizaje
+  jugarBtn.style.display = "none";
+  aprenderBtn.style.display = "none";
+  // Cambiar título
+  tituloElem.textContent = "Como se dice...";
 });
 
 // Modo aprender
@@ -177,6 +185,9 @@ aprenderBtn.addEventListener("click", () => {
   traductorInput.style.display = "none";
   traductorBtn.style.display = "none";
   cambiarDireccionBtn.style.display = "none";
+  jugarBtn.style.display = "none";
+  aprenderBtn.style.display = "none";
+  tituloElem.textContent = "Como se dice...";
 });
 
 // Mostrar pregunta
@@ -218,7 +229,6 @@ function mostrarPregunta() {
       }, 4000);
     }, 1000);
   } else {
-    // modo jugar
     mensaje.textContent = "";
     input.style.display = "block";
     input.value = "";

@@ -78,10 +78,10 @@ document.getElementById("contenedor").prepend(cambiarDireccionBtn);
 cambiarDireccionBtn.addEventListener("click", () => {
   inglesAEspanol = !inglesAEspanol;
   if (inglesAEspanol) {
-    cambiarDireccionBtn.textContent = "Cambiar a Inglés → Español";
+    cambiarDireccionBtn.textContent ="Cambiar a Español → Inglés";
     traductorInput.placeholder = "Escribe la palabra en inglés";
   } else {
-    cambiarDireccionBtn.textContent = "Cambiar a Español → Inglés";
+    cambiarDireccionBtn.textContent ="Cambiar a Inglés → Español";
     traductorInput.placeholder = "Escribe la palabra en español";
   }
 });

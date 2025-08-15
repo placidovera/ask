@@ -171,7 +171,7 @@ if (!botonResponder) {
     if (respuestaUsuario === respuestaCorrecta) {
       puntos++;
       actualizarPuntos();
-      mensaje.textContent = `¡Correcto! 🏆 La respuesta es "${preguntas[indice].respuesta}"`;
+      mensaje.textContent = `🏆¡Correcto! "${preguntas[indice].respuesta}"`;
       hablar(preguntas[indice].respuesta, "es-ES");
       indice++;
       input.value = "";

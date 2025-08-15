@@ -1,4 +1,4 @@
-<style>
+
     /* Estilo futurista general */
     body {
       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
@@ -24,7 +24,7 @@
 
     h1 {
       color: #00ffea;
-      text-shadow: 0 0 10px #00ffea, 0 0 20px #00ffea80;
+      text-shadow: 0 0 2rem #00ffea, 0 0 20px #00ffea80;
     }
 
     button {
@@ -56,7 +56,8 @@
     }
 
     #boton {
-      border-radius: 0.75rem 0.75rem 0.75rem 0.75rem;
+      border-radius: 0 0.75rem 0.75rem 0;
+
     }
 
     #mensaje, #puntos {

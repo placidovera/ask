@@ -161,7 +161,8 @@ if (!botonResponder) {
   botonResponder.className = "btn btn-info btn-lg mt-3";
   botonResponder.textContent = "Responder";
   botonResponder.style.display = "none"; // inicialmente oculto
-  document.getElementById("contenedor").appendChild(botonResponder);
+ input.insertAdjacentElement('afterend', botonResponder);
+
 
   botonResponder.addEventListener("click", () => {
     const respuestaUsuario = input.value.trim().toLowerCase();

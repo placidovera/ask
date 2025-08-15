@@ -1,6 +1,5 @@
 const adivinanzaElem = document.getElementById("adivinanza");
 const input = document.getElementById("input");
-const boton = document.getElementById("boton");
 const mensaje = document.getElementById("mensaje");
 const jugarBtn = document.getElementById("jugar");
 const aprenderBtn = document.getElementById("aprender");
@@ -12,6 +11,9 @@ let indice = 0;
 let modo = "";
 let puntos = 0;
 
+// Ocultar input al iniciar la página
+input.style.display = "none";
+
 // temporizadores globales
 let timeoutAvance;
 let timeoutLectura;
@@ -21,7 +23,7 @@ const botonAnterior = document.createElement("button");
 botonAnterior.textContent = "Anterior";
 botonAnterior.className = "btn btn-secondary btn-lg me-2";
 botonAnterior.style.display = "none";
-boton.parentNode.insertBefore(botonAnterior, boton);
+document.getElementById("contenedor").appendChild(botonAnterior);
 
 // Botón “Mostrar Respuesta”
 const botonMostrar = document.createElement("button");
@@ -44,10 +46,10 @@ botonSalir.addEventListener("click", () => {
   puntos = 0;
   actualizarPuntos();
   input.style.display = "none";
-  boton.style.display = "none";
   botonAnterior.style.display = "none";
   botonMostrar.style.display = "none";
   botonSalir.style.display = "none";
+  botonResponder.style.display = "none";
   traductorInput.style.display = "block";
   traductorBtn.style.display = "inline-block";
   cambiarDireccionBtn.style.display = "inline-block";
@@ -151,6 +153,36 @@ traductorBtn.addEventListener("click", () => {
   if (!resultado) mensaje.textContent = "Palabra no encontrada.";
 });
 
+// Crear botón "Responder" dinámicamente si no existe
+let botonResponder = document.getElementById("boton");
+if (!botonResponder) {
+  botonResponder = document.createElement("button");
+  botonResponder.id = "boton";
+  botonResponder.className = "btn btn-info btn-lg mt-3";
+  botonResponder.textContent = "Responder";
+  botonResponder.style.display = "none"; // inicialmente oculto
+  document.getElementById("contenedor").appendChild(botonResponder);
+
+  botonResponder.addEventListener("click", () => {
+    const respuestaUsuario = input.value.trim().toLowerCase();
+    const respuestaCorrecta = preguntas[indice].respuesta.trim().toLowerCase();
+
+    if (respuestaUsuario === respuestaCorrecta) {
+      puntos++;
+      actualizarPuntos();
+      mensaje.textContent = `¡Correcto! 🏆 La respuesta es "${preguntas[indice].respuesta}"`;
+      hablar(preguntas[indice].respuesta, "es-ES");
+      indice++;
+      input.value = "";
+      setTimeout(mostrarPregunta, 1500);
+    } else {
+      mensaje.textContent = "No es correcto. Intenta de nuevo.";
+      input.value = "";
+      input.focus();
+    }
+  });
+}
+
 // Modo jugar
 jugarBtn.addEventListener("click", () => {
   modo = "jugar";
@@ -166,11 +198,12 @@ jugarBtn.addEventListener("click", () => {
   traductorInput.style.display = "none";
   traductorBtn.style.display = "none";
   cambiarDireccionBtn.style.display = "none";
-  // Ocultar botones de juego y aprendizaje
   jugarBtn.style.display = "none";
   aprenderBtn.style.display = "none";
-  // Cambiar título
   tituloElem.textContent = "Como se dice...";
+
+  // Mostrar el botón responder
+  botonResponder.style.display = "inline-block";
 });
 
 // Modo aprender
@@ -181,6 +214,7 @@ aprenderBtn.addEventListener("click", () => {
   botonMostrar.style.display = "none";
   botonSalir.style.display = "inline-block";
   input.style.display = "none";
+  botonResponder.style.display = "none"; // oculto en aprender
   mostrarPregunta();
   traductorInput.style.display = "none";
   traductorBtn.style.display = "none";
@@ -203,9 +237,9 @@ function mostrarPregunta() {
     adivinanzaElem.textContent = textoFinal;
     mensaje.textContent = "";
     input.style.display = "none";
-    boton.style.display = "none";
     botonAnterior.style.display = "none";
     botonMostrar.style.display = "none";
+    botonResponder.style.display = "none";
     hablar(textoFinal, "es-ES");
     return;
   }
@@ -216,10 +250,9 @@ function mostrarPregunta() {
 
   if (modo === "aprender") {
     mensaje.textContent = respuestaCorrecta;
-    boton.style.display = "inline-block";
-    boton.textContent = "Next";
     botonAnterior.style.display = indice > 0 ? "inline-block" : "none";
     botonMostrar.style.display = "none";
+    input.style.display = "none";
 
     timeoutLectura = setTimeout(() => {
       hablar(respuestaCorrecta, "es-ES");
@@ -228,15 +261,14 @@ function mostrarPregunta() {
         mostrarPregunta();
       }, 4000);
     }, 1000);
-  } else {
+  } else if (modo === "jugar") {
     mensaje.textContent = "";
     input.style.display = "block";
     input.value = "";
     input.focus();
-    boton.style.display = "inline-block";
-    boton.textContent = "Responder";
     botonAnterior.style.display = "none";
     botonMostrar.style.display = "inline-block";
+    botonResponder.style.display = "inline-block"; // asegurar que el botón se vea
   }
 }
 
@@ -244,32 +276,6 @@ function mostrarPregunta() {
 function actualizarPuntos() {
   puntosElem.textContent = `Puntos: ${puntos}`;
 }
-
-// Botón principal
-boton.addEventListener("click", () => {
-  if (!preguntas.length) return;
-
-  if (modo === "aprender") {
-    indice++;
-    mostrarPregunta();
-  } else if (modo === "jugar") {
-    const respuestaUsuario = input.value.trim().toLowerCase();
-    const respuestaCorrecta = preguntas[indice].respuesta.trim().toLowerCase();
-
-    if (respuestaUsuario === respuestaCorrecta) {
-      puntos++;
-      actualizarPuntos();
-      mensaje.textContent = `¡Correcto! 🏆 La respuesta es "${preguntas[indice].respuesta}"`;
-      hablar(preguntas[indice].respuesta, "es-ES");
-      indice++;
-      setTimeout(mostrarPregunta, 1500);
-    } else {
-      mensaje.textContent = "No es correcto. Intenta de nuevo.";
-      input.value = "";
-      input.focus();
-    }
-  }
-});
 
 // Botón "Anterior"
 botonAnterior.addEventListener("click", () => {
@@ -285,5 +291,27 @@ botonMostrar.addEventListener("click", () => {
     const respuestaCorrecta = preguntas[indice].respuesta;
     mensaje.textContent = `La respuesta es: "${respuestaCorrecta}"`;
     hablar(respuestaCorrecta, "es-ES");
+  }
+});
+
+// Detectar respuesta de usuario en input
+input.addEventListener("keypress", (e) => {
+  if (e.key === "Enter" && modo === "jugar") {
+    const respuestaUsuario = input.value.trim().toLowerCase();
+    const respuestaCorrecta = preguntas[indice].respuesta.trim().toLowerCase();
+
+    if (respuestaUsuario === respuestaCorrecta) {
+      puntos++;
+      actualizarPuntos();
+      mensaje.textContent = `¡Correcto! 🏆 La respuesta es "${preguntas[indice].respuesta}"`;
+      hablar(preguntas[indice].respuesta, "es-ES");
+      indice++;
+      input.value = "";
+      setTimeout(mostrarPregunta, 1500);
+    } else {
+      mensaje.textContent = "No es correcto. Intenta de nuevo.";
+      input.value = "";
+      input.focus();
+    }
   }
 });

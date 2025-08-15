@@ -33,9 +33,12 @@ aprenderBtn.disabled = true;
 
 function hablar(texto) {
   const mensajeVoz = new SpeechSynthesisUtterance(texto);
-  mensajeVoz.lang = "es-ES";
+  mensajeVoz.lang = "en-US"; // Cambiado a inglés
+  mensajeVoz.rate = 0.9;     // Velocidad más natural (opcional)
+  mensajeVoz.pitch = 1.0;    // Tono de voz (opcional)
   window.speechSynthesis.speak(mensajeVoz);
 }
+
 
 // Cargar JSON
 fetch('preguntas_limpias.json')

@@ -4,7 +4,7 @@ const mensaje = document.getElementById("mensaje");
 const jugarBtn = document.getElementById("jugar");
 const aprenderBtn = document.getElementById("aprender");
 const puntosElem = document.getElementById("puntos");
-const tituloElem = document.querySelector("h1.text-center"); // h1 principal
+const tituloElem = document.querySelector("h1.text-center"); 
 
 let preguntas = [];
 let indice = 0;
@@ -13,6 +13,16 @@ let puntos = 0;
 
 // Ocultar input al iniciar la página
 input.style.display = "none";
+const logo = document.createElement("img");
+logo.src="./WhatsApp Image 2025-08-15 at 21.36.40_0aa1d1a8.jpg";
+logo.style.position = "absolute";
+logo.style.top = "10px";      // distancia desde arriba del contenedor
+logo.style.right = "10px";    // distancia desde la derecha
+logo.style.width = "50px";    // tamaño del logo
+logo.style.height = "auto";
+
+document.getElementById("contenedor").appendChild(logo);
+
 
 // temporizadores globales
 let timeoutAvance;
@@ -71,7 +81,7 @@ document.getElementById("contenedor").prepend(traductorInput);
 
 const traductorBtn = document.createElement("button");
 traductorBtn.textContent = "Traducir";
-traductorBtn.className = "btn btn-primary mb-3";
+traductorBtn.className = "btn btn-danger mb-3";
 traductorBtn.style.display = "inline-block";
 document.getElementById("contenedor").prepend(traductorBtn);
 
@@ -79,8 +89,9 @@ document.getElementById("contenedor").prepend(traductorBtn);
 let inglesAEspanol = true; // true: inglés→español, false: español→inglés
 const cambiarDireccionBtn = document.createElement("button");
 cambiarDireccionBtn.textContent = "Cambiar a Español → Inglés";
-cambiarDireccionBtn.className = "btn btn-warning mb-3 ms-2";
-document.getElementById("contenedor").prepend(cambiarDireccionBtn);
+cambiarDireccionBtn.className = "btn btn-light mb-3 ms-2";
+traductorBtn.insertAdjacentElement('afterend', cambiarDireccionBtn);
+
 
 cambiarDireccionBtn.addEventListener("click", () => {
   inglesAEspanol = !inglesAEspanol;
@@ -122,11 +133,11 @@ function mezclarArray(array) {
   return array;
 }
 
-// Cargar JSON
+// Carga JSON
 fetch("preguntas_limpias.json")
   .then(res => res.json())
   .then(data => {
-    preguntas = mezclarArray(data); // <-- Mezclamos para que sean aleatorias
+    preguntas = mezclarArray(data); 
     jugarBtn.disabled = false;
     aprenderBtn.disabled = false;
     traductorBtn.disabled = false;
@@ -170,7 +181,8 @@ if (!botonResponder) {
   botonResponder.className = "btn btn-info btn-lg mt-3";
   botonResponder.textContent = "Responder";
   botonResponder.style.display = "none"; // inicialmente oculto
-  input.insertAdjacentElement('afterend', botonResponder);
+  input.parentElement.insertAdjacentElement('afterend', botonResponder);
+
 
   botonResponder.addEventListener("click", () => {
     const respuestaUsuario = input.value.trim().toLowerCase();
@@ -223,7 +235,7 @@ aprenderBtn.addEventListener("click", () => {
   botonMostrar.style.display = "none";
   botonSalir.style.display = "inline-block";
   input.style.display = "none";
-  botonResponder.style.display = "none"; // oculto en aprender
+  botonResponder.style.display = "none";
   mostrarPregunta();
   traductorInput.style.display = "none";
   traductorBtn.style.display = "none";

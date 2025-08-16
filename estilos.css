@@ -1,81 +1,79 @@
+/* Futurista Británico Limpio */
+body {
+  background: linear-gradient(135deg, #3366ff, #0033cc);
+  font-family: 'Orbitron', sans-serif;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
 
-    /* Estilo futurista general */
-    body {
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      font-family: 'Orbitron', sans-serif;
-      color: #00ffea;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
-    }
+#contenedor {
+  background: rgba(0, 0, 50, 0.85);
+  border: 2px solid #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 20px #0033cc, 0 0 40px #ff003c inset;
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  backdrop-filter: blur(10px);
+}
 
-    #contenedor {
-      background: rgba(0, 0, 0, 0.8);
-      border: 2px solid #00ffea;
-      border-radius: 1.5rem;
-      box-shadow: 0 0 20px #00ffea, 0 0 40px #00ffea50 inset;
-      padding: 2rem;
-      width: 100%;
-      max-width: 600px;
-      backdrop-filter: blur(10px);
-    }
+h1 {
+  color: #ffffff;
+  text-shadow: 0 0 8px #ffffff, 0 0 15px #0033cc;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
 
-    h1 {
-      color: #00ffea;
-      text-shadow: 0 0 2rem #00ffea, 0 0 20px #00ffea80;
-    }
+#adivinanza {
+  font-size: 1.2rem;
+  color: #ffffff;
+  border-left: 4px solid #ff003c;
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
+  min-height: 3rem;
+}
 
-    button {
-      font-weight: bold;
-      text-transform: uppercase;
-      transition: all 0.3s ease;
-      border-radius: 0.75rem;
-    }
+.input-group {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
 
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px #00ffea, 0 0 25px #00ffea80 inset;
-    }
+/* Input alineado con Bootstrap buttons */
+#input {
+  flex: 1;
+  border: 2px solid #0033cc;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  outline: none;
+  height: 50px;
+  box-sizing: border-box;
+}
 
-    #adivinanza {
-      font-size: 1.2rem;
-      color: #fff;
-      border-left: 4px solid #00ffea;
-      padding-left: 1rem;
-      margin-bottom: 1.5rem;
-      min-height: 3rem;
-    }
+#mensaje, #puntos {
+  color: #ffffff;
+  text-shadow: 0 0 5px #0033cc, 0 0 10px #ff003c;
+  margin-top: 1rem;
+}
 
-    #input {
-      border-radius: 0.75rem 0 0 0.75rem;
-      border: 2px solid #00ffea;
-      background: rgba(0,0,0,0.6);
-      color: #00ffea;
-    }
+/* Responsivo */
+@media (max-width: 576px) {
+  h1 {
+    font-size: 1.8rem;
+  }
 
-    #boton {
-      border-radius: 0 0.75rem 0.75rem 0;
+  #adivinanza {
+    font-size: 1rem;
+  }
 
-    }
-
-    #mensaje, #puntos {
-      text-shadow: 0 0 5px #00ffea;
-  
-    }
-
-    /* Responsivo */
-    @media (max-width: 576px) {
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      #adivinanza {
-        font-size: 1rem;
-      }
-
-      button {
-        font-size: 0.9rem;
-      }
-    }
+  #input {
+    font-size: 0.9rem;
+    height: 45px;
+  }
+}

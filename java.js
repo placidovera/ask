@@ -113,11 +113,20 @@ function hablar(texto, idioma = "auto") {
   window.speechSynthesis.speak(mensajeVoz);
 }
 
+// Función para mezclar un array (Fisher–Yates)
+function mezclarArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 // Cargar JSON
 fetch("preguntas_limpias.json")
   .then(res => res.json())
   .then(data => {
-    preguntas = data;
+    preguntas = mezclarArray(data); // <-- Mezclamos para que sean aleatorias
     jugarBtn.disabled = false;
     aprenderBtn.disabled = false;
     traductorBtn.disabled = false;
@@ -161,8 +170,7 @@ if (!botonResponder) {
   botonResponder.className = "btn btn-info btn-lg mt-3";
   botonResponder.textContent = "Responder";
   botonResponder.style.display = "none"; // inicialmente oculto
- input.insertAdjacentElement('afterend', botonResponder);
-
+  input.insertAdjacentElement('afterend', botonResponder);
 
   botonResponder.addEventListener("click", () => {
     const respuestaUsuario = input.value.trim().toLowerCase();
@@ -201,7 +209,7 @@ jugarBtn.addEventListener("click", () => {
   cambiarDireccionBtn.style.display = "none";
   jugarBtn.style.display = "none";
   aprenderBtn.style.display = "none";
-  tituloElem.textContent = "Como se dice...";
+  tituloElem.textContent = "Can you say…?";
 
   // Mostrar el botón responder
   botonResponder.style.display = "inline-block";
@@ -304,7 +312,7 @@ input.addEventListener("keypress", (e) => {
     if (respuestaUsuario === respuestaCorrecta) {
       puntos++;
       actualizarPuntos();
-      mensaje.textContent = `¡Correcto! 🏆 La respuesta es "${preguntas[indice].respuesta}"`;
+      mensaje.textContent = `"${preguntas[indice].respuesta}"`;
       hablar(preguntas[indice].respuesta, "es-ES");
       indice++;
       input.value = "";

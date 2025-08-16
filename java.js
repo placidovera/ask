@@ -340,33 +340,29 @@ input.addEventListener("keypress", (e) => {
 // Wake Lock
 let wakeLock = null;
 
-async function mantenerPantallaEncendida() {
+async function activarWakeLock() {
   try {
-    wakeLock = await navigator.wakeLock.request('screen');
-    console.log('Pantalla bloqueada evitada');
+    if ('wakeLock' in navigator && modo === "jugar") {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => console.log('Wake Lock released'));
+      console.log('Wake Lock activo');
+    }
   } catch (err) {
-    console.error('No se pudo mantener pantalla activa:', err);
+    console.error(`Error Wake Lock: ${err.name}, ${err.message}`);
   }
 }
 
-async function liberarPantalla() {
+function liberarWakeLock() {
   if (wakeLock) {
-    await wakeLock.release();
-    wakeLock = null;
+    wakeLock.release().then(() => {
+      wakeLock = null;
+      console.log('Wake Lock liberado');
+    });
   }
 }
 
-// En el modo jugar
-jugarBtn.addEventListener("click", () => {
-  mantenerPantallaEncendida();
-});
+// Activar al iniciar modo jugar
+jugarBtn.addEventListener("click", activarWakeLock);
 
-// Al salir o finalizar el juego
-botonSalir.addEventListener("click", () => {
-  liberarPantalla();
-});
-
-// Al finalizar todas las preguntas en modo jugar
-if (indice >= preguntas.length) {
-  liberarPantalla();
-}
+// Liberar al salir o terminar preguntas
+botonSalir.addEventListener("click", liberarWakeLock);

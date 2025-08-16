@@ -337,3 +337,36 @@ input.addEventListener("keypress", (e) => {
     }
   }
 });
+// Wake Lock
+let wakeLock = null;
+
+async function mantenerPantallaEncendida() {
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+    console.log('Pantalla bloqueada evitada');
+  } catch (err) {
+    console.error('No se pudo mantener pantalla activa:', err);
+  }
+}
+
+async function liberarPantalla() {
+  if (wakeLock) {
+    await wakeLock.release();
+    wakeLock = null;
+  }
+}
+
+// En el modo jugar
+jugarBtn.addEventListener("click", () => {
+  mantenerPantallaEncendida();
+});
+
+// Al salir o finalizar el juego
+botonSalir.addEventListener("click", () => {
+  liberarPantalla();
+});
+
+// Al finalizar todas las preguntas en modo jugar
+if (indice >= preguntas.length) {
+  liberarPantalla();
+}

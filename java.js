@@ -13,29 +13,28 @@ let puntos = 0;
 
 // Ocultar input al iniciar la página
 input.style.display = "none";
+
+// Logo
 const logo = document.createElement("img");
 logo.src="./WhatsApp Image 2025-08-15 at 21.36.40_0aa1d1a8.jpg";
 logo.style.position = "absolute";
-logo.style.top = "10px";      // distancia desde arriba del contenedor
-logo.style.right = "10px";    // distancia desde la derecha
-logo.style.width = "50px";    // tamaño del logo
+logo.style.top = "10px";
+logo.style.right = "10px";
+logo.style.width = "50px";
 logo.style.height = "auto";
-
 document.getElementById("contenedor").appendChild(logo);
 
-
-// temporizadores globales
+// Temporizadores
 let timeoutAvance;
 let timeoutLectura;
 
-// Botón “Anterior”
+// Botones dinámicos
 const botonAnterior = document.createElement("button");
 botonAnterior.textContent = "Anterior";
 botonAnterior.className = "btn btn-secondary btn-lg me-2";
 botonAnterior.style.display = "none";
 document.getElementById("contenedor").appendChild(botonAnterior);
 
-// Botón “Mostrar Respuesta”
 const botonMostrar = document.createElement("button");
 botonMostrar.textContent = "Mostrar Respuesta";
 botonMostrar.className = "btn btn-lg mt-3";
@@ -44,34 +43,13 @@ botonMostrar.style.color = "white";
 botonMostrar.style.display = "none";
 document.getElementById("contenedor").appendChild(botonMostrar);
 
-// Botón “Salir”
 const botonSalir = document.createElement("button");
 botonSalir.textContent = "Salir";
 botonSalir.className = "btn btn-danger btn-lg mt-3 ms-2";
 botonSalir.style.display = "none";
 document.getElementById("contenedor").appendChild(botonSalir);
-botonSalir.addEventListener("click", () => {
-  modo = "";
-  indice = 0;
-  puntos = 0;
-  actualizarPuntos();
-  input.style.display = "none";
-  botonAnterior.style.display = "none";
-  botonMostrar.style.display = "none";
-  botonSalir.style.display = "none";
-  botonResponder.style.display = "none";
-  traductorInput.style.display = "block";
-  traductorBtn.style.display = "inline-block";
-  cambiarDireccionBtn.style.display = "inline-block";
-  adivinanzaElem.textContent = "";
-  mensaje.textContent = "";
-  // Restaurar título original
-  tituloElem.textContent = "“How much English do you know?” ✅";
-  jugarBtn.style.display = "inline-block";
-  aprenderBtn.style.display = "inline-block";
-});
 
-// Input de búsqueda tipo traductor
+// Input traductor
 const traductorInput = document.createElement("input");
 traductorInput.type = "text";
 traductorInput.placeholder = "Escribe la palabra en inglés";
@@ -85,13 +63,12 @@ traductorBtn.className = "btn btn-danger mb-3";
 traductorBtn.style.display = "inline-block";
 document.getElementById("contenedor").prepend(traductorBtn);
 
-// Botón para cambiar dirección de traducción
-let inglesAEspanol = true; // true: inglés→español, false: español→inglés
+// Botón cambiar dirección
+let inglesAEspanol = true;
 const cambiarDireccionBtn = document.createElement("button");
 cambiarDireccionBtn.textContent = "Cambiar a Español → Inglés";
 cambiarDireccionBtn.className = "btn btn-light mb-3 ms-2";
 traductorBtn.insertAdjacentElement('afterend', cambiarDireccionBtn);
-
 
 cambiarDireccionBtn.addEventListener("click", () => {
   inglesAEspanol = !inglesAEspanol;
@@ -109,7 +86,7 @@ jugarBtn.disabled = true;
 aprenderBtn.disabled = true;
 traductorBtn.disabled = true;
 
-// Función para hablar
+// Función hablar
 function hablar(texto, idioma = "auto") {
   window.speechSynthesis.cancel();
   const mensajeVoz = new SpeechSynthesisUtterance(texto);
@@ -124,7 +101,7 @@ function hablar(texto, idioma = "auto") {
   window.speechSynthesis.speak(mensajeVoz);
 }
 
-// Función para mezclar un array (Fisher–Yates)
+// Mezclar array
 function mezclarArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -144,45 +121,59 @@ fetch("preguntas_limpias.json")
   })
   .catch(err => console.error("Error cargando JSON:", err));
 
-// Función de búsqueda
-traductorBtn.addEventListener("click", () => {
-  if (!preguntas.length) {
-    mensaje.textContent = "El traductor aún no está listo, espera...";
-    return;
-  }
+// --- A PARTIR DE AQUÍ, BUSCADOR USA LA API ---
 
-  const texto = traductorInput.value.trim().toLowerCase();
+// Función para traducir usando Google Translate
+async function traducirConAPI(texto, source = "en", target = "es") {
+  try {
+    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${source}&tl=${target}&dt=t&q=${encodeURIComponent(texto)}`);
+    const data = await res.json();
+    return data[0][0][0]; // el texto traducido
+  } catch (err) {
+    console.error("Error traduciendo:", err);
+    return null;
+  }
+}
+
+// Función para crear pregunta usando API
+async function crearPregunta(palabra, source = "es", target = "en") {
+  const traduccion = await traducirConAPI(palabra, source, target);
+  if (!traduccion) return null;
+  return { pregunta: palabra, respuesta: traduccion };
+}
+
+// Traductor / buscador
+traductorBtn.addEventListener("click", async () => {
+  const texto = traductorInput.value.trim();
   if (!texto) return;
 
-  let resultado = null;
+  let source = inglesAEspanol ? "en" : "es";
+  let target = inglesAEspanol ? "es" : "en";
 
-  if (inglesAEspanol) {
-    resultado = preguntas.find(p => p.respuesta.toLowerCase() === texto);
-    if (resultado) {
-      mensaje.textContent = `Traducción: "${resultado.pregunta}"`;
-      hablar(resultado.pregunta, "es-ES");
-    }
+  const resultado = await crearPregunta(texto, source, target);
+
+  if (resultado) {
+    mensaje.textContent = `Traducción: "${resultado.respuesta}"`;
+    hablar(resultado.respuesta, inglesAEspanol ? "es-ES" : "en-US");
+
+    // Agregar al juego
+    preguntas.push(resultado);
+    jugarBtn.disabled = false;
+    aprenderBtn.disabled = false;
   } else {
-    resultado = preguntas.find(p => p.pregunta.toLowerCase() === texto);
-    if (resultado) {
-      mensaje.textContent = `Traducción: "${resultado.respuesta}"`;
-      hablar(resultado.respuesta, "en-US");
-    }
+    mensaje.textContent = "No se pudo traducir la palabra.";
   }
-
-  if (!resultado) mensaje.textContent = "Palabra no encontrada.";
 });
 
-// Crear botón "Responder" dinámicamente si no existe
+// Botón "Responder"
 let botonResponder = document.getElementById("boton");
 if (!botonResponder) {
   botonResponder = document.createElement("button");
   botonResponder.id = "boton";
   botonResponder.className = "btn btn-info btn-lg mt-3";
   botonResponder.textContent = "Responder";
-  botonResponder.style.display = "none"; // inicialmente oculto
+  botonResponder.style.display = "none";
   input.parentElement.insertAdjacentElement('afterend', botonResponder);
-
 
   botonResponder.addEventListener("click", () => {
     const respuestaUsuario = input.value.trim().toLowerCase();
@@ -222,8 +213,6 @@ jugarBtn.addEventListener("click", () => {
   jugarBtn.style.display = "none";
   aprenderBtn.style.display = "none";
   tituloElem.textContent = "Can you say…?";
-
-  // Mostrar el botón responder
   botonResponder.style.display = "inline-block";
 });
 
@@ -248,7 +237,6 @@ aprenderBtn.addEventListener("click", () => {
 // Mostrar pregunta
 function mostrarPregunta() {
   if (!preguntas.length) return;
-
   window.speechSynthesis.cancel();
   clearTimeout(timeoutAvance);
   clearTimeout(timeoutLectura);
@@ -289,7 +277,7 @@ function mostrarPregunta() {
     input.focus();
     botonAnterior.style.display = "none";
     botonMostrar.style.display = "inline-block";
-    botonResponder.style.display = "inline-block"; // asegurar que el botón se vea
+    botonResponder.style.display = "inline-block";
   }
 }
 
@@ -315,12 +303,32 @@ botonMostrar.addEventListener("click", () => {
   }
 });
 
-// Detectar respuesta de usuario en input
+// Botón "Salir"
+botonSalir.addEventListener("click", () => {
+  modo = "";
+  indice = 0;
+  puntos = 0;
+  actualizarPuntos();
+  input.style.display = "none";
+  botonAnterior.style.display = "none";
+  botonMostrar.style.display = "none";
+  botonSalir.style.display = "none";
+  botonResponder.style.display = "none";
+  traductorInput.style.display = "block";
+  traductorBtn.style.display = "inline-block";
+  cambiarDireccionBtn.style.display = "inline-block";
+  adivinanzaElem.textContent = "";
+  mensaje.textContent = "";
+  tituloElem.textContent = "“How much English do you know?” ✅";
+  jugarBtn.style.display = "inline-block";
+  aprenderBtn.style.display = "inline-block";
+});
+
+// Detectar Enter en input
 input.addEventListener("keypress", (e) => {
   if (e.key === "Enter" && modo === "jugar") {
     const respuestaUsuario = input.value.trim().toLowerCase();
     const respuestaCorrecta = preguntas[indice].respuesta.trim().toLowerCase();
-
     if (respuestaUsuario === respuestaCorrecta) {
       puntos++;
       actualizarPuntos();

@@ -86,16 +86,11 @@ jugarBtn.disabled = true;
 aprenderBtn.disabled = true;
 traductorBtn.disabled = true;
 
-// Función hablar
-function hablar(texto, idioma = "auto") {
+// Función hablar siempre en inglés por defecto
+function hablar(texto, idioma = "en-US") {
   window.speechSynthesis.cancel();
   const mensajeVoz = new SpeechSynthesisUtterance(texto);
-  if (idioma === "auto") {
-    if (/[áéíóúñ]/i.test(texto)) mensajeVoz.lang = "es-ES";
-    else mensajeVoz.lang = "en-US";
-  } else {
-    mensajeVoz.lang = idioma;
-  }
+  mensajeVoz.lang = idioma;
   mensajeVoz.rate = 1.0;
   mensajeVoz.pitch = 1.0;
   window.speechSynthesis.speak(mensajeVoz);
@@ -121,21 +116,18 @@ fetch("preguntas_limpias.json")
   })
   .catch(err => console.error("Error cargando JSON:", err));
 
-// --- A PARTIR DE AQUÍ, BUSCADOR USA LA API ---
-
-// Función para traducir usando Google Translate
+// --- BUSCADOR USA API ---
 async function traducirConAPI(texto, source = "en", target = "es") {
   try {
     const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${source}&tl=${target}&dt=t&q=${encodeURIComponent(texto)}`);
     const data = await res.json();
-    return data[0][0][0]; // el texto traducido
+    return data[0][0][0];
   } catch (err) {
     console.error("Error traduciendo:", err);
     return null;
   }
 }
 
-// Función para crear pregunta usando API
 async function crearPregunta(palabra, source = "es", target = "en") {
   const traduccion = await traducirConAPI(palabra, source, target);
   if (!traduccion) return null;
@@ -154,6 +146,7 @@ traductorBtn.addEventListener("click", async () => {
 
   if (resultado) {
     mensaje.textContent = `Traducción: "${resultado.respuesta}"`;
+    // SOLO CAMBIO: si estamos en modo inglés → español, leer en español
     hablar(resultado.respuesta, inglesAEspanol ? "es-ES" : "en-US");
 
     // Agregar al juego
@@ -183,7 +176,7 @@ if (!botonResponder) {
       puntos++;
       actualizarPuntos();
       mensaje.textContent = `🏆¡Correcto! "${preguntas[indice].respuesta}"`;
-      hablar(preguntas[indice].respuesta, "es-ES");
+      hablar(preguntas[indice].respuesta, "en-US");
       indice++;
       input.value = "";
       setTimeout(mostrarPregunta, 1500);
@@ -249,7 +242,7 @@ function mostrarPregunta() {
     botonAnterior.style.display = "none";
     botonMostrar.style.display = "none";
     botonResponder.style.display = "none";
-    hablar(textoFinal, "es-ES");
+    hablar(textoFinal, "en-US");
     return;
   }
 
@@ -264,7 +257,7 @@ function mostrarPregunta() {
     input.style.display = "none";
 
     timeoutLectura = setTimeout(() => {
-      hablar(respuestaCorrecta, "es-ES");
+      hablar(respuestaCorrecta, "en-US");
       timeoutAvance = setTimeout(() => {
         indice++;
         mostrarPregunta();
@@ -299,7 +292,7 @@ botonMostrar.addEventListener("click", () => {
   if (modo === "jugar") {
     const respuestaCorrecta = preguntas[indice].respuesta;
     mensaje.textContent = `La respuesta es: "${respuestaCorrecta}"`;
-    hablar(respuestaCorrecta, "es-ES");
+    hablar(respuestaCorrecta, "en-US");
   }
 });
 
@@ -333,7 +326,7 @@ input.addEventListener("keypress", (e) => {
       puntos++;
       actualizarPuntos();
       mensaje.textContent = `"${preguntas[indice].respuesta}"`;
-      hablar(preguntas[indice].respuesta, "es-ES");
+      hablar(preguntas[indice].respuesta, "en-US");
       indice++;
       input.value = "";
       setTimeout(mostrarPregunta, 1500);

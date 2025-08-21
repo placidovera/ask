@@ -1,79 +1,74 @@
-/* Futurista Británico Limpio */
-body {
-  background: linear-gradient(135deg, #3366ff, #0033cc);
+ /* ===== NAVBAR ===== */
+    .navbar-custom {
+      width: 100%;
+      background: linear-gradient(90deg, #111 0%, #6a11cb 50%, #2575fc 100%);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      margin: 0;
+      padding: 0.8rem 1rem;
+    }
+    .navbar-brand {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff !important;
+    }
+    .navbar-nav .nav-link {
+      color: #fff !important;
+      margin: 0 15px;
+      transition: 0.3s;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #39ff14 !important;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      width: 100%;
+      background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      color: #fff;
+      padding: 1.5rem 0;
+    }
+
+    /* ===== CONTENEDOR DEL JUEGO ===== */
+    #contenedor {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem 2rem;
+    }
+
+    /* ===== SECCION DE IMAGEN ===== */
+    .image-section {
+      width: 100%;
+      text-align: center;
+      margin: 3rem 0;
+    }
+    .image-section img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+/* Títulos llamativos con Orbitron */
+h1, h2, .titulo {
   font-family: 'Orbitron', sans-serif;
-  color: #ffffff;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
-#contenedor {
-  background: rgba(0, 0, 50, 0.85);
-  border: 2px solid #ffffff;
-  border-radius: 1.5rem;
-  box-shadow: 0 0 20px #0033cc, 0 0 40px #ff003c inset;
-  padding: 2rem;
-  width: 100%;
-  max-width: 600px;
-  backdrop-filter: blur(10px);
+/* Texto general con Poppins */
+body, p, a, .navbar, .container {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
 }
 
-h1 {
-  color: #ffffff;
-  text-shadow: 0 0 8px #ffffff, 0 0 15px #0033cc;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-}
-
-#adivinanza {
-  font-size: 1.2rem;
-  color: #ffffff;
-  border-left: 4px solid #ff003c;
-  padding-left: 1rem;
-  margin-bottom: 1.5rem;
-  min-height: 3rem;
-}
-
-.input-group {
-  display: flex;
-  margin-bottom: 1.5rem;
-}
-
-/* Input alineado con Bootstrap buttons */
-#input {
-  flex: 1;
-  border: 2px solid #0033cc;
-  border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
-  outline: none;
-  height: 50px;
-  box-sizing: border-box;
-}
-
-#mensaje, #puntos {
-  color: #ffffff;
-  text-shadow: 0 0 5px #0033cc, 0 0 10px #ff003c;
-  margin-top: 1rem;
-}
-
-/* Responsivo */
-@media (max-width: 576px) {
-  h1 {
-    font-size: 1.8rem;
-  }
-
-  #adivinanza {
-    font-size: 1rem;
-  }
-
-  #input {
-    font-size: 0.9rem;
-    height: 45px;
-  }
+#jugar, 
+#aprender {
+  width: 100px;
 }

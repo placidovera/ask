@@ -13,7 +13,8 @@ let puntos = 0;
 
 // Ocultar input al iniciar la página
 input.style.display = "none";
-
+puntosElem.style.display = "none"; 
+tituloElem.style.display = "none";
 // Logo
 const logo = document.createElement("img");
 logo.src="./WhatsApp Image 2025-08-15 at 21.36.40_0aa1d1a8.jpg";
@@ -37,8 +38,7 @@ document.getElementById("contenedor").appendChild(botonAnterior);
 
 const botonMostrar = document.createElement("button");
 botonMostrar.textContent = "Mostrar Respuesta";
-botonMostrar.className = "btn btn-lg mt-3";
-botonMostrar.style.backgroundColor = "#001fff";
+botonMostrar.className = "btn btn-secondary btn-lg mt-3";
 botonMostrar.style.color = "white";
 botonMostrar.style.display = "none";
 document.getElementById("contenedor").appendChild(botonMostrar);
@@ -47,7 +47,12 @@ const botonSalir = document.createElement("button");
 botonSalir.textContent = "Salir";
 botonSalir.className = "btn btn-danger btn-lg mt-3 ms-2";
 botonSalir.style.display = "none";
+botonSalir.style.width = "110px";  
+botonSalir.style.position = "relative"; 
+botonSalir.style.left = "-9px";           
+
 document.getElementById("contenedor").appendChild(botonSalir);
+
 
 // Input traductor
 const traductorInput = document.createElement("input");
@@ -163,7 +168,7 @@ let botonResponder = document.getElementById("boton");
 if (!botonResponder) {
   botonResponder = document.createElement("button");
   botonResponder.id = "boton";
-  botonResponder.className = "btn btn-info btn-lg mt-3";
+  botonResponder.className = "btn btn-primary btn-lg mt-3";
   botonResponder.textContent = "Responder";
   botonResponder.style.display = "none";
   input.parentElement.insertAdjacentElement('afterend', botonResponder);
@@ -205,8 +210,10 @@ jugarBtn.addEventListener("click", () => {
   cambiarDireccionBtn.style.display = "none";
   jugarBtn.style.display = "none";
   aprenderBtn.style.display = "none";
+  tituloElem.style.display = "block";
   tituloElem.textContent = "Can you say?";
   botonResponder.style.display = "inline-block";
+  puntosElem.style.display = "block";
 });
 
 // Modo aprender
@@ -224,7 +231,9 @@ aprenderBtn.addEventListener("click", () => {
   cambiarDireccionBtn.style.display = "none";
   jugarBtn.style.display = "none";
   aprenderBtn.style.display = "none";
+  tituloElem.style.display = "block";
   tituloElem.textContent = "Asi de dice";
+  puntosElem.style.display = "none"; 
 });
 
 // Mostrar pregunta

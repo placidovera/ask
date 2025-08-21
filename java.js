@@ -38,7 +38,7 @@ document.getElementById("contenedor").appendChild(botonAnterior);
 const botonMostrar = document.createElement("button");
 botonMostrar.textContent = "Mostrar Respuesta";
 botonMostrar.className = "btn btn-lg mt-3";
-botonMostrar.style.backgroundColor = "#6f42c1";
+botonMostrar.style.backgroundColor = "#001fff";
 botonMostrar.style.color = "white";
 botonMostrar.style.display = "none";
 document.getElementById("contenedor").appendChild(botonMostrar);
@@ -67,7 +67,7 @@ document.getElementById("contenedor").prepend(traductorBtn);
 let inglesAEspanol = true;
 const cambiarDireccionBtn = document.createElement("button");
 cambiarDireccionBtn.textContent = "Cambiar a Español → Inglés";
-cambiarDireccionBtn.className = "btn btn-light mb-3 ms-2";
+cambiarDireccionBtn.className = "btn btn-primary mb-3 ms-2";
 traductorBtn.insertAdjacentElement('afterend', cambiarDireccionBtn);
 
 cambiarDireccionBtn.addEventListener("click", () => {
@@ -205,7 +205,7 @@ jugarBtn.addEventListener("click", () => {
   cambiarDireccionBtn.style.display = "none";
   jugarBtn.style.display = "none";
   aprenderBtn.style.display = "none";
-  tituloElem.textContent = "Can you say…?";
+  tituloElem.textContent = "Can you say?";
   botonResponder.style.display = "inline-block";
 });
 
@@ -224,7 +224,7 @@ aprenderBtn.addEventListener("click", () => {
   cambiarDireccionBtn.style.display = "none";
   jugarBtn.style.display = "none";
   aprenderBtn.style.display = "none";
-  tituloElem.textContent = "Como se dice...";
+  tituloElem.textContent = "Asi de dice";
 });
 
 // Mostrar pregunta

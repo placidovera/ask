@@ -14,7 +14,6 @@ let puntos = 0;
 // Ocultar input al iniciar la página
 input.style.display = "none";
 puntosElem.style.display = "none"; 
-tituloElem.style.display = "none";
 // Logo
 const logo = document.createElement("img");
 logo.src="./WhatsApp Image 2025-08-15 at 21.36.40_0aa1d1a8.jpg";
@@ -210,7 +209,6 @@ jugarBtn.addEventListener("click", () => {
   cambiarDireccionBtn.style.display = "none";
   jugarBtn.style.display = "none";
   aprenderBtn.style.display = "none";
-  tituloElem.style.display = "block";
   tituloElem.textContent = "Can you say?";
   botonResponder.style.display = "inline-block";
   puntosElem.style.display = "block";
@@ -231,7 +229,6 @@ aprenderBtn.addEventListener("click", () => {
   cambiarDireccionBtn.style.display = "none";
   jugarBtn.style.display = "none";
   aprenderBtn.style.display = "none";
-  tituloElem.style.display = "block";
   tituloElem.textContent = "Asi de dice";
   puntosElem.style.display = "none"; 
 });

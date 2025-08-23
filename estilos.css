@@ -83,5 +83,12 @@ body, p, a, .navbar, .container {
   background-size: cover;
   background-position: center;
   z-index: 9999;
-  pointer-events: none; /* Para que no bloquee clics */
+  pointer-events: none; 
+}
+
+@media (max-width: 414px) {
+.fondo-superpuesto{
+  width: 350px;
+  height: 300px;
+}
 }

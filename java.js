@@ -5,6 +5,26 @@ const jugarBtn = document.getElementById("jugar");
 const aprenderBtn = document.getElementById("aprender");
 const puntosElem = document.getElementById("puntos");
 const tituloElem = document.querySelector("h1.text-center"); 
+const intro = document.querySelector(".fondo-superpuesto");
+
+function ocultarIntro() {
+  intro.style.display = "none";
+
+  // Eliminamos los eventos para que no se repita innecesariamente
+  document.removeEventListener("click", ocultarIntro);
+  document.removeEventListener("keydown", ocultarIntro);
+  document.removeEventListener("mousemove", ocultarIntro);
+  document.removeEventListener("scroll", ocultarIntro);
+  document.removeEventListener("touchstart", ocultarIntro);
+}
+
+// Escuchamos cualquier tipo de interacción
+document.addEventListener("click", ocultarIntro);
+document.addEventListener("keydown", ocultarIntro);
+document.addEventListener("mousemove", ocultarIntro);
+document.addEventListener("scroll", ocultarIntro);
+document.addEventListener("touchstart", ocultarIntro);
+
 
 let preguntas = [];
 let indice = 0;

@@ -72,3 +72,16 @@ body, p, a, .navbar, .container {
 #aprender {
   width: 100px;
 }
+
+.fondo-superpuesto {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("./ChatGPT\ Image\ 22\ ago\ 2025\,\ 22_02_00.png");
+  background-size: cover;
+  background-position: center;
+  z-index: 9999;
+  pointer-events: none; /* Para que no bloquee clics */
+}

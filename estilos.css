@@ -20,6 +20,10 @@
     .navbar-nav .nav-link:hover {
       color: #39ff14 !important;
     }
+.form-control {
+    background-color: #f0f0f0; /* gris claro */
+  border: 1px solid #ccc;    /* borde sutil */
+}
 
     /* ===== FOOTER ===== */
     footer {
@@ -54,7 +58,6 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
-/* Títulos llamativos con Orbitron */
 h1, h2, .titulo {
    font-family: 'Playfair Display', serif;
   font-weight: 700;

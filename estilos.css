@@ -45,19 +45,6 @@
       padding: 1rem 2rem;
     }
 
-    /* ===== SECCION DE IMAGEN ===== */
-    .image-section {
-      width: 100%;
-      text-align: center;
-      margin: 3rem 0;
-    }
-    .image-section img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
 h1, h2, .titulo {
    font-family: 'Playfair Display', serif;
   font-weight: 700;
